@@ -1,0 +1,19 @@
+{
+  "buildCommand": "cd app && VITE_BUILD_HASH=$(git rev-parse --short HEAD) npm run build",
+  "outputDirectory": "app/dist",
+  "installCommand": "cd app && npm install",
+  "framework": "vite",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://backbone.primal-lifestyle.com https://primal-lifestyle.com"
+        },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
