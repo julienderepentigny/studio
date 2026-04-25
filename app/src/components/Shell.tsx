@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { ModuleHeader } from './ModuleHeader';
+import { ModuleHeader } from '@primal/shared-ui';
+import '@primal/shared-ui/src/ModuleHeader.css';
 
 const NAV_ITEMS = [
   { num: '01', label: 'BROWSE', disabled: true },
@@ -10,7 +11,7 @@ const NAV_ITEMS = [
 export default function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <ModuleHeader />
+      <ModuleHeader title="STUDIO" />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
