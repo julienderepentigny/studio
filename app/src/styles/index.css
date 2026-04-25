@@ -22,8 +22,3 @@ body {
   font-size: 13px;
   letter-spacing: 0.02em;
 }
-
-/* Hide the shared ModuleHeader when iframed inside BACKBONE */
-html[data-embedded="true"] .module-header {
-  display: none;
-}
