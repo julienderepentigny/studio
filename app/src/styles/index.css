@@ -21,6 +21,31 @@ body {
   letter-spacing: 0.02em;
 }
 
-html[data-embedded="true"] {
-  /* hooks go here in Phase 1 */
+.primal-module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--primal-bg);
+  border-bottom: 1px solid var(--primal-hair);
+  flex-shrink: 0;
+}
+
+.primal-wordmark {
+  height: 22px;
+  display: block;
+}
+
+.primal-section-name {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primal-fg);
+}
+
+/* Hide the wordmark when iframed inside BACKBONE — BACKBONE already shows one */
+html[data-embedded="true"] .primal-module-header__left {
+  visibility: hidden;
 }
