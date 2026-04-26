@@ -1,17 +1,40 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ModuleHeader } from '@primal/shared-ui';
 import '@primal/shared-ui/src/ModuleHeader.css';
+import { supabase } from '../lib/supabase';
+import { useSeatStore } from '../stores/seatStore';
+import SeatBadge from './SeatBadge';
 
 const NAV_ITEMS = [
-  { num: '01', label: 'BROWSE', disabled: true },
-  { num: '02', label: 'ACTIVITY', disabled: true },
-  { num: '03', label: 'SETTINGS', disabled: true },
+  { num: '01', label: 'BROWSE', disabled: true, path: null },
+  { num: '02', label: 'ACTIVITY', disabled: true, path: null },
+  { num: '03', label: 'SETTINGS', disabled: false, path: '/settings' },
 ];
 
 export default function Shell({ children }: { children: ReactNode }) {
+  const me = useSeatStore((s) => s.me);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!me) return;
+    const beat = () => {
+      if (document.visibilityState !== 'visible') return;
+      void supabase.from('devices')
+        .update({ last_seen_at: new Date().toISOString() })
+        .eq('id', me.id);
+    };
+    beat();
+    const id = setInterval(beat, 30_000);
+    return () => clearInterval(id);
+  }, [me]);
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <ModuleHeader title="STUDIO" />
+      <ModuleHeader title="STUDIO">
+        <SeatBadge />
+      </ModuleHeader>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
@@ -20,10 +43,15 @@ export default function Shell({ children }: { children: ReactNode }) {
             {NAV_ITEMS.map((item) => (
               <div
                 key={item.num}
+                onClick={() => {
+                  if (!item.disabled && item.path) navigate(item.path);
+                }}
                 className={`px-4 py-2.5 flex items-center gap-3 text-[9px] tracking-[0.22em] uppercase ${
                   item.disabled
                     ? 'text-[var(--primal-dim)] cursor-not-allowed'
-                    : 'text-white cursor-pointer hover:bg-white/[0.02]'
+                    : `cursor-pointer hover:bg-white/[0.02] ${
+                        location.pathname === item.path ? 'text-white' : 'text-[var(--primal-dim)]'
+                      }`
                 }`}
               >
                 <span className="text-[var(--primal-dim)]">{item.num}</span>

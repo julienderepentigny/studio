@@ -7,3 +7,5 @@ dist/
 *.log
 *.tsbuildinfo
 .DS_Store
+STUDIO_SECRETS.md
+STUDIO_PHASE_1_ANSWERS_*.md
